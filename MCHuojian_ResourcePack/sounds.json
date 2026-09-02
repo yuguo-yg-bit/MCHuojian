@@ -1,0 +1,11 @@
+{
+    "_comment": "RP 端音效入口：列出所有自定义音效文件及其在游戏内的定义名。游戏会从此文件找音效名字，再去 sounds/ 目录读具体 .ogg 文件。",
+    "_example_individual_sound_def": {
+        "sound.event.name": {
+            "category": "neutral",
+            "sounds": [
+                { "name": "sounds/sfx/my_sound.ogg", "stream": false }
+            ]
+        }
+    }
+}

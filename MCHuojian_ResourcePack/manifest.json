@@ -1,0 +1,35 @@
+{
+    "_comment": "=== 资源包清单 manifest.json (MC Studio 里叫 pack_manifest.json，两者等效) ===",
+    "_warning_1": "4 个 UUID 占位必须替换！不能保留 TODO_UUID，不同包之间也不能重复。用 https://www.uuidgenerator.net/ 生成 Version 4 UUID。",
+    "_warning_2": "发布新版本时，header.version 与 modules[].version 一起 +1（至少最后一位）。否则联机时版本不一致会加载失败。",
+    "_ref": "参考 官方代码文档/mconline/15-玩法组件教程【新版】/6-认识附加包/3-挑战：亲手新建一个附加包.md 第37~136行",
+
+    "format_version": 1,
+
+    "header": {
+        "name": "MCHuojian_ResourcePack",
+        "description": "MC huo jian Mod - Resource Pack. PRD pending.",
+        "uuid": "TODO_UUID_RP_HEADER",
+        "version": [0, 0, 1],
+        "min_engine_version": [1, 18, 0]
+    },
+
+    "modules": [
+        {
+            "description": "MC huo jian resource module: textures, models, ui, sounds, entity clients, effects.",
+            "uuid": "TODO_UUID_RP_MODULE",
+            "version": [0, 0, 1],
+            "type": "resources"
+        }
+    ],
+
+    "dependencies": [
+        {
+            "_note": "必须与 行为包 manifest.json -> header.uuid 及 version 完全一致，确保资源包/行为包成对加载。",
+            "uuid": "TODO_UUID_BP_HEADER",
+            "version": [0, 0, 1]
+        }
+    ],
+
+    "capabilities": []
+}

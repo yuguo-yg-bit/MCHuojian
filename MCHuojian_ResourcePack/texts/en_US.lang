@@ -1,0 +1,6 @@
+resource_pack.en_US
+# 参考 texts/*.lang 格式：item.<namespace>:<name>=显示名；block.<namespace>:<name>=显示名；entity.<namespace>:<name>=显示名
+# 例：
+#   item.huojian_team_mchuojian:rocket=Rocket
+#   block.huojian_team_mchuojian:launch_pad=Launch Pad
+#   entity.huojian_team_mchuojian:rocket=Rocket Entity

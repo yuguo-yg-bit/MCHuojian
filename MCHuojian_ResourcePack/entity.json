@@ -1,0 +1,26 @@
+{
+    "_comment": "RP 端实体客户端配置入口：列出所有自定义实体对应的客户端定义文件。等 PRD 决定有哪些实体（生物/载具/飞机等）后，逐条添加。每个实体文件放 entity/<实体名>.json，内容通常含客户端描述（scripts/animate 等）、materials、textures、geometry、render_controllers、animations。",
+    "_example": {
+        "entity_template": {
+            "description": {
+                "identifier": "huojian_team_mchuojian:entity_name",
+                "animations": {
+                    "default_pose": "animation.entity_name.default"
+                },
+                "scripts": {
+                    "animate": [ "default_pose" ]
+                },
+                "geometry": {
+                    "default": "geometry.entity_name"
+                },
+                "materials": [
+                    { "default": "entity_alphatest" }
+                ],
+                "textures": {
+                    "default": "textures/entity/entity_name"
+                },
+                "render_controllers": [ "controller.render.default" ]
+            }
+        }
+    }
+}
