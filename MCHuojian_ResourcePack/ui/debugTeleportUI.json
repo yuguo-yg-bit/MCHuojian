@@ -56,9 +56,6 @@
                 "bindings": [
                     { "binding_condition": "always", "binding_name": "#btnMars.click" }
                 ]
-            } },
-            { "btnClose@debugTeleportUI.closeButton": {
-                "offset": [0, 210]
             } }
         ]
     },
@@ -68,7 +65,7 @@
         "anchor_from": "center",
         "anchor_to": "center",
         "offset": [0, 0],
-        "size": [220, 280],
+        "size": [220, 240],
         "layer": 1,
         "visible": true,
         "alpha": 0.7
