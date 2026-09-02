@@ -34,17 +34,22 @@ class MCHuojianMod(object):
 
     # --------------------------------------------------------
     # 服务端初始化 —— 注册服务端系统/组件/命令/事件
+    # 文档依据：[mcguide/20-玩法开发/13-模组SDK编程/2-Python脚本开发/0-脚本开发入门.md#L219-L263]
+    #           [mcdocs/1-ModAPI/接口/通用/System.md#registersystem]
     # --------------------------------------------------------
     @Mod.InitServer()
     def _InitServer(self):
-        # TODO(PRD): 在此注册 ServerSystem
-        #   serverApi = __import__("mod.server.extraServerApi")
-        #   serverApi.RegisterSystem(
-        #       MOD_NAME_SPACE,
-        #       "MCHuojianServerSystem",
-        #       "MCHuojian_Scripts.modSystem.mchuojianServerSystem.MCHuojianServerSystem"
-        #   )
-        pass
+        import mod.server.extraServerApi as serverApi
+        from modCommon import (
+            DEBUG_SERVER_SYSTEM_NAME,
+            DEBUG_SERVER_SYSTEM_CLS_PATH,
+        )
+        # 注册服务端调试传送系统（PRD 4.6 调试 UI 按钮配套）
+        serverApi.RegisterSystem(
+            MOD_NAME_SPACE,
+            DEBUG_SERVER_SYSTEM_NAME,
+            DEBUG_SERVER_SYSTEM_CLS_PATH,
+        )
 
     # --------------------------------------------------------
     # 服务端销毁 —— 保存持久化数据 / 清理定时器 / 卸载组件
@@ -55,17 +60,22 @@ class MCHuojianMod(object):
 
     # --------------------------------------------------------
     # 客户端初始化 —— 注册客户端系统/UI/渲染/特效
+    # 文档依据：[mcguide/20-玩法开发/13-模组SDK编程/2-Python脚本开发/0-脚本开发入门.md#L219-L263]
+    #           [mcdocs/1-ModAPI/接口/通用/System.md#registersystem]
     # --------------------------------------------------------
     @Mod.InitClient()
     def _InitClient(self):
-        # TODO(PRD): 在此注册 ClientSystem
-        #   clientApi = __import__("mod.client.extraClientApi")
-        #   clientApi.RegisterSystem(
-        #       MOD_NAME_SPACE,
-        #       "MCHuojianClientSystem",
-        #       "MCHuojian_Scripts.modSystem.mchuojianClientSystem.MCHuojianClientSystem"
-        #   )
-        pass
+        import mod.client.extraClientApi as clientApi
+        from modCommon import (
+            DEBUG_CLIENT_SYSTEM_NAME,
+            DEBUG_CLIENT_SYSTEM_CLS_PATH,
+        )
+        # 注册客户端调试传送系统（PRD 4.6 调试 UI 按钮配套）
+        clientApi.RegisterSystem(
+            MOD_NAME_SPACE,
+            DEBUG_CLIENT_SYSTEM_NAME,
+            DEBUG_CLIENT_SYSTEM_CLS_PATH,
+        )
 
     # --------------------------------------------------------
     # 客户端销毁 —— 关闭 UI / 解绑观察者
