@@ -1,26 +1,9 @@
 {
-    "_comment": "RP 端实体客户端配置入口：列出所有自定义实体对应的客户端定义文件。等 PRD 决定有哪些实体（生物/载具/飞机等）后，逐条添加。每个实体文件放 entity/<实体名>.json，内容通常含客户端描述（scripts/animate 等）、materials、textures、geometry、render_controllers、animations。",
-    "_example": {
-        "entity_template": {
-            "description": {
-                "identifier": "huojian_team_mchuojian:entity_name",
-                "animations": {
-                    "default_pose": "animation.entity_name.default"
-                },
-                "scripts": {
-                    "animate": [ "default_pose" ]
-                },
-                "geometry": {
-                    "default": "geometry.entity_name"
-                },
-                "materials": [
-                    { "default": "entity_alphatest" }
-                ],
-                "textures": {
-                    "default": "textures/entity/entity_name"
-                },
-                "render_controllers": [ "controller.render.default" ]
-            }
-        }
-    }
+    "_status": "TODO: 内容需要验证，等 PRD + MC Studio 验证",
+    "_doc_source_1": "官方代码文档/mcguide/15-资源管理/2-文件结构.md 第39行写明：RP 端要有 entity/ 文件夹，但并未给出 entity.json(资源包根目录) 的字段示例。",
+    "_why_todo": "文件里示例的 'minecraft:client_entity' / 'format_version' / 'description' 等字段是按国际版基岩版常规写法推测的，网易中国版会有 'netease:' 前缀扩展，字段名和是否允许根文件聚合都没在当前文档查到。",
+    "_what_to_do_before_fill": [
+        "1. 等 PRD 明确自定义实体列表（火箭实体/其他）后，再查官方文档/MC Studio 新建 AddOn 的 entity/ 目录下的真实文件格式",
+        "2. 直接用 MC Studio 新建 '附加包' 模板，把它自动生成的 entity.json / entity/<xxx>.json 原样拷过来做基准"
+    ]
 }

@@ -1,11 +1,9 @@
 {
-    "_comment": "RP 端音效入口：列出所有自定义音效文件及其在游戏内的定义名。游戏会从此文件找音效名字，再去 sounds/ 目录读具体 .ogg 文件。",
-    "_example_individual_sound_def": {
-        "sound.event.name": {
-            "category": "neutral",
-            "sounds": [
-                { "name": "sounds/sfx/my_sound.ogg", "stream": false }
-            ]
-        }
-    }
+    "_status": "TODO: 内容需要验证，等 PRD + MC Studio 验证",
+    "_doc_source_1": "官方代码文档/mcguide/15-资源管理/2-文件结构.md 第46行写明：RP 端要有 sounds/ 文件夹、sounds.json 入口文件，但字段格式未给出示例。",
+    "_why_todo": "文件里示例的 'sound_definitions' / 'category' / 'stream' / 'volume' 等字段是按国际版常规写法推测的，网易中国版可能有额外字段或限制，当前文档 1070 篇 md 里没找到 sounds.json 完整示例。",
+    "_what_to_do_before_fill": [
+        "1. PRD 确定有哪些音效后，从 MC Studio 自带样例（AwesomeMod/Demo项目）里拷 sounds.json 模板",
+        "2. 或查 官方代码文档/mcguide/16-美术/9-特效/ 下相关章节（音效一般和粒子同章）"
+    ]
 }
