@@ -20,10 +20,10 @@
 
     "rootPanel": {
         "type": "panel",
-        "anchor_from": "center",
-        "anchor_to": "center",
-        "offset": [0, 0],
-        "size": ["100%", "100%"],
+        "anchor_from": "top_right",
+        "anchor_to": "top_right",
+        "offset": [-10, 10],
+        "size": [220, 280],
         "visible": true,
         "layer": 1,
         "controls": [
@@ -68,7 +68,7 @@
         "anchor_from": "center",
         "anchor_to": "center",
         "offset": [0, 0],
-        "size": [220, 280],
+        "size": ["100%", "100%"],
         "layer": 1,
         "visible": true,
         "alpha": 0.7
