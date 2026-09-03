@@ -1,0 +1,26 @@
+{
+    "_comment": "MC Studio 版文件名：pack_manifest.json。在 Studio 创建的 AddOn 工程里用的是这个名字，内容与 manifest.json 等价。为兼容 MC Studio 新建 AddOn 的默认命名，这里也留一份。",
+    "format_version": 1,
+    "header": {
+        "name": "MCHuojian_BehaviorPack",
+        "description": "MC huo jian Mod - Behavior Pack. PRD pending.",
+        "uuid": "TODO_UUID_BP_HEADER",
+        "version": [0, 0, 1],
+        "min_engine_version": [1, 18, 0]
+    },
+    "modules": [
+        {
+            "description": "MC huo jian behavior module: scripts, entities, blocks, items, recipes, loot tables.",
+            "uuid": "TODO_UUID_BP_MODULE",
+            "version": [0, 0, 1],
+            "type": "data"
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "TODO_UUID_RP_HEADER",
+            "version": [0, 0, 1]
+        }
+    ],
+    "capabilities": []
+}

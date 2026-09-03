@@ -1,0 +1,166 @@
+{
+    "_doc_note": "调试传送 UI 画布（PRD 4.6）。文件格式依据 30-UI说明文档.md 第9-49行：文件名 = namespace = python 类名（必须一致）。",
+
+    "namespace": "debugTeleportUI",
+
+    "main@common.base_screen": {
+        "absorbs_input": true,
+        "always_accepts_input": false,
+        "force_render_below": true,
+        "is_showing_menu": true,
+        "render_game_behind": true,
+        "render_only_when_topmost": true,
+        "should_steal_mouse": false,
+        "type": "screen",
+        "$screen_content": "debugTeleportUI.rootPanel",
+        "controls": [
+            { "rootPanel@debugTeleportUI.rootPanel": {} }
+        ]
+    },
+
+    "rootPanel": {
+        "type": "panel",
+        "anchor_from": "top_right",
+        "anchor_to": "top_right",
+        "offset": [-10, 10],
+        "size": [220, 280],
+        "visible": true,
+        "layer": 1,
+        "controls": [
+            { "bgPanel@debugTeleportUI.bgPanel": {} },
+            { "titleLabel@debugTeleportUI.titleLabel": {} },
+            { "btnOverworld@debugTeleportUI.dimButton": {
+                "$label_text": "主世界",
+                "offset": [0, 50],
+                "bindings": [
+                    { "binding_condition": "always", "binding_name": "#btnOverworld.click" }
+                ]
+            } },
+            { "btnNearSpace@debugTeleportUI.dimButton": {
+                "$label_text": "近地太空",
+                "offset": [0, 90],
+                "bindings": [
+                    { "binding_condition": "always", "binding_name": "#btnNearSpace.click" }
+                ]
+            } },
+            { "btnMoon@debugTeleportUI.dimButton": {
+                "$label_text": "月球",
+                "offset": [0, 130],
+                "bindings": [
+                    { "binding_condition": "always", "binding_name": "#btnMoon.click" }
+                ]
+            } },
+            { "btnMars@debugTeleportUI.dimButton": {
+                "$label_text": "火星",
+                "offset": [0, 170],
+                "bindings": [
+                    { "binding_condition": "always", "binding_name": "#btnMars.click" }
+                ]
+            } },
+            { "btnClose@debugTeleportUI.closeButton": {
+                "offset": [0, 210]
+            } }
+        ]
+    },
+
+    "bgPanel": {
+        "type": "panel",
+        "anchor_from": "center",
+        "anchor_to": "center",
+        "offset": [0, 0],
+        "size": ["100%", "100%"],
+        "layer": 1,
+        "visible": true,
+        "alpha": 0.7
+    },
+
+    "titleLabel": {
+        "type": "label",
+        "anchor_from": "top_middle",
+        "anchor_to": "top_middle",
+        "offset": [0, 10],
+        "text": "调试维度传送",
+        "color": [1, 1, 1],
+        "font_size": "large",
+        "font_type": "smooth",
+        "shadow": true,
+        "text_alignment": "center",
+        "layer": 5,
+        "visible": true
+    },
+
+    "dimButton@common.button": {
+        "_doc": "按钮模板（依据 30-UI说明文档.md 第374-477行）。每个具体按钮（btnOverworld/btnNearSpace/btnMoon/btnMars）继承此模板并通过 bindings 数组声明 binding_name，对应 Python 类 @ViewBinder.binding 装饰器（依据 30-UI说明文档.md 第1623-1637行）。",
+        "$default_texture": "textures/netease/common/button/default",
+        "$hover_texture": "textures/netease/common/button/hover",
+        "$pressed_texture": "textures/netease/common/button/pressed",
+        "$label_color": [1, 1, 1],
+        "$label_font_size": "middle",
+        "$label_text": "",
+        "anchor_from": "top_middle",
+        "anchor_to": "top_middle",
+        "size": [180, 30],
+        "offset": [0, 0],
+        "layer": 3,
+        "type": "button",
+        "visible": true,
+        "controls": [
+            { "default@debugTeleportUI.default": {} },
+            { "hover@debugTeleportUI.hover": {} },
+            { "pressed@debugTeleportUI.pressed": {} },
+            { "button_label@debugTeleportUI.button_label": {} }
+        ],
+        "default_control": "default",
+        "hover_control": "hover",
+        "pressed_control": "pressed"
+    },
+
+    "closeButton@debugTeleportUI.dimButton": {
+        "$label_color": [1, 0.5, 0.5],
+        "$label_text": "关闭",
+        "bindings": [
+            {
+                "binding_condition": "always",
+                "binding_name": "#btnClose.click"
+            }
+        ]
+    },
+
+    "_btn_bindings_doc": "下面 4 个 btnXXX 引用 dimButton 模板并各自声明 bindings/binding_name，与 Python 类 @ViewBinder.binding 装饰器配对。",
+
+    "btnOverworldBinding": {
+        "_doc": "占位节点：真正的 btnOverworld 已在 rootPanel.controls 里引用 dimButton 时附加 bindings。但 binding_name 必须显式写在按钮的 bindings 数组里，因此实际绑定写在 rootPanel.btnOverworld 的 inline 扩展里（见上）。本节仅做注释占位。"
+    },
+
+    "button_label": {
+        "color": "$label_color",
+        "font_scale_factor": "$label_font_scale_factor",
+        "font_size": "$label_font_size",
+        "font_type": "smooth",
+        "layer": 3,
+        "offset": [0, 0],
+        "shadow": false,
+        "text": "$label_text",
+        "text_alignment": "center",
+        "type": "label",
+        "max_size": ["100%", "100%"]
+    },
+
+    "default": {
+        "layer": 2,
+        "texture": "$default_texture",
+        "type": "image"
+    },
+
+    "hover": {
+        "layer": 2,
+        "texture": "$hover_texture",
+        "type": "image"
+    },
+
+    "pressed": {
+        "layer": 2,
+        "texture": "$pressed_texture",
+        "type": "image"
+    }
+}

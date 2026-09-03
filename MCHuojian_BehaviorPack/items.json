@@ -1,0 +1,4 @@
+{
+    "_comment": "BP 端原版物品定义入口：原版 addon 格式的物品 JSON 放 items/<name>.json；在网易 ModSDK 里，大多数自定义物品走 netease_items/ 目录（下方）。这里先留空。",
+    "format_version": "1.10"
+}

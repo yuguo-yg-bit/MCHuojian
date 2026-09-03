@@ -1,0 +1,26 @@
+{
+    "format_version": "1.14.0",
+    "netease:dimension_info": {
+        "description": {
+            "identifier": "dm24",
+            "name": "火星",
+            "display_name": "火星"
+        },
+        "components": {
+            "netease:dimension_type": "minecraft:overworld",
+            "netease:generator_noise": {},
+            "netease:ban_vanilla_feature": {},
+            "netease:ban_vanilla_mineshaft": {},
+            "netease:ban_vanilla_monument": {},
+            "netease:ban_vanilla_mansion": {},
+            "netease:ban_vanilla_temple": {},
+            "netease:ban_vanilla_pillageroutpost": {},
+            "netease:ban_vanilla_ruinedportal": {},
+            "netease:ban_vanilla_ruins": {},
+            "netease:ban_vanilla_shipwreck": {},
+            "netease:ban_vanilla_stronghold": {},
+            "netease:ban_vanilla_village": {},
+            "netease:spawn_biomes": ["dm24_mars"]
+        }
+    }
+}

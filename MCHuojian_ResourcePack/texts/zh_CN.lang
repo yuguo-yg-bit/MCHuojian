@@ -1,0 +1,5 @@
+resource_pack.zh_CN
+# 例：
+#   item.huojian_team_mchuojian:rocket=火箭
+#   block.huojian_team_mchuojian:launch_pad=发射台
+#   entity.huojian_team_mchuojian:rocket=火箭实体

@@ -1,0 +1,9 @@
+{
+    "_status": "TODO: 内容需要验证，等 PRD + MC Studio 验证",
+    "_doc_source_1": "官方代码文档/mcguide/15-资源管理/2-文件结构.md 第42行写明：RP 端有 models/ 文件夹（方块/实体模型），第50行有 pack_manifest.json，但没明确说明根目录 blocks.json 是否必需、顶层键是什么。",
+    "_why_todo": "国际版 RP 端 blocks.json 顶层一般是 '<block_name>' 直接对应 'sound'/'textures' 映射；但网易 ModSDK 自定义方块（netease_blocks/）走的是另一套路径，两者关系未在文档里写清楚。",
+    "_what_to_do_before_fill": [
+        "1. PRD 确定自定义方块列表（发射台/控制板/燃料块等）后再填",
+        "2. 以 MC Studio 新建 AddOn 自动生成的 blocks.json 为准"
+    ]
+}

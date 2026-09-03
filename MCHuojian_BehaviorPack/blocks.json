@@ -1,0 +1,4 @@
+{
+    "_comment": "BP 端原版 blocks.json：行为包里必须的 blocks 配置文件。在网易 ModSDK 里，大多数自定义方块走 netease_blocks/ 目录（见下方 netease_blocks/），这里先留空。",
+    "format_version": [1, 1, 0]
+}
