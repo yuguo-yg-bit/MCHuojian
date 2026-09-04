@@ -1,4 +1,5 @@
-# 文档依据：
+"""
+文档依据：
   - 官方代码文档/mcdocs/1-ModAPI/事件/玩家.md  L29-L31 (PlayerHurtEvent)
   - 官方代码文档/mcdocs/1-ModAPI/事件/玩家.md  L739-L761 (PlayerRespawnEvent)
   - 官方代码文档/mcdocs/1-ModAPI/事件/玩家.md  L764-L786 (PlayerRespawnFinishServerEvent)
@@ -19,7 +20,7 @@ MCHuojian 火箭模组 - 服务端系统
 """
 
 import mod.server.extraServerApi as serverApi
-from mod_log import logger as logger
+from mod_log import logger
 
 # ============================================================
 # 配置常量（文档依据：1-自定义维度.md L13-L15 维度ID范围22~int最大值）
@@ -29,8 +30,10 @@ from mod_log import logger as logger
 SPACE_DIMENSIONS = [22, 23, 24]  # dm22近地太空, dm23月球, dm24火星
 
 # 真空伤害配置
+# 注：Minecraft 基岩版服务端 tick = 30 次/秒（1 tick ≈ 33.3ms）
+# 文档依据：世界.md L811-L826 OnScriptTickServer
 VACUUM_DAMAGE = 1                # 每次扣血值
-VACUUM_DAMAGE_INTERVAL = 40      # 扣血间隔（tick），40 tick = 2秒（1秒=20 tick）
+VACUUM_DAMAGE_INTERVAL = 60      # 扣血间隔（tick），60 tick = 2秒（1秒=30 tick）
 
 # 宇航服物品标识符（TODO: 等物品注册后填入正式identifier）
 # 文档依据：ItemPosType.md - ARMOR=3盔甲栏, ArmorSlotType.md - HEAD=0/BODY=1/LEG=2/FOOT=3
@@ -51,8 +54,8 @@ class RocketServerSystem(object):
 
     def __init__(self):
         self.tick_counter = 0
-        # 记录在太空维度中的玩家，避免重复扣血
-        self.space_players = {}  # {playerId: tick_count}
+        # 记录在太空维度中的玩家ID集合，用于真空伤害定时触发
+        self.space_players = set()
 
     def Init(self):
         """初始化系统，注册所有事件监听"""
@@ -68,17 +71,7 @@ class RocketServerSystem(object):
             self.OnScriptTickServer
         )
 
-        # 2. 监听玩家受伤事件，用于真空伤害保护判定
-        # 文档依据：玩家.md L29-L31 PlayerHurtEvent
-        self.ListenForEvent(
-            serverApi.GetEngineNamespace(),
-            serverApi.GetEngineSystemName(),
-            "PlayerHurtEvent",
-            self,
-            self.OnPlayerHurt
-        )
-
-        # 3. 监听玩家死亡事件
+        # 2. 监听玩家死亡事件
         # 文档依据：玩家.md L26-L28 PlayerDieEvent
         self.ListenForEvent(
             serverApi.GetEngineNamespace(),
@@ -88,7 +81,7 @@ class RocketServerSystem(object):
             self.OnPlayerDie
         )
 
-        # 4. 监听玩家复活完成事件，用于重生规则
+        # 3. 监听玩家复活完成事件，用于重生规则
         # 文档依据：玩家.md L764-L786 PlayerRespawnFinishServerEvent
         self.ListenForEvent(
             serverApi.GetEngineNamespace(),
@@ -98,7 +91,7 @@ class RocketServerSystem(object):
             self.OnPlayerRespawnFinish
         )
 
-        # 5. 监听维度切换完成事件，用于状态重置
+        # 4. 监听维度切换完成事件，用于状态重置
         # 文档依据：玩家.md L201-L225 DimensionChangeFinishServerEvent
         self.ListenForEvent(
             serverApi.GetEngineNamespace(),
@@ -108,7 +101,7 @@ class RocketServerSystem(object):
             self.OnDimensionChangeFinish
         )
 
-        # 6. 监听玩家加入事件
+        # 5. 监听玩家加入事件
         # 文档依据：世界.md L190-L218 AddServerPlayerEvent
         self.ListenForEvent(
             serverApi.GetEngineNamespace(),
@@ -118,7 +111,7 @@ class RocketServerSystem(object):
             self.OnAddServerPlayer
         )
 
-        # 7. 监听玩家离开事件
+        # 6. 监听玩家离开事件
         # 文档依据：世界.md L385-L405 DelServerPlayerEvent
         self.ListenForEvent(
             serverApi.GetEngineNamespace(),
@@ -145,28 +138,11 @@ class RocketServerSystem(object):
             return
 
         # 遍历所有在太空维度中的玩家，施加真空伤害
-        for player_id in list(self.space_players.keys()):
+        for player_id in list(self.space_players):
             try:
                 self._apply_vacuum_damage(player_id)
             except Exception as e:
                 logger.error("[MCHuojian] 真空伤害处理异常 playerId=%s, error=%s", player_id, str(e))
-
-    def OnPlayerHurt(self, args):
-        """
-        玩家受伤事件。
-        如果玩家穿着完整宇航服，免疫真空伤害。
-        文档依据：玩家.md L29-L31
-        """
-        player_id = args.get('id', '')
-        if not player_id:
-            return
-
-        # 检查玩家是否在太空维度
-        dimension_id = self._get_player_dimension(player_id)
-        if dimension_id not in SPACE_DIMENSIONS:
-            return
-
-        logger.debug("[MCHuojian] 玩家 %s 在太空维度受伤, dimension=%d", player_id, dimension_id)
 
     def OnPlayerDie(self, args):
         """
@@ -182,8 +158,7 @@ class RocketServerSystem(object):
         if dimension_id in SPACE_DIMENSIONS:
             logger.info("[MCHuojian] 玩家 %s 在太空维度死亡, dimension=%d", player_id, dimension_id)
             # 清除太空玩家记录
-            if player_id in self.space_players:
-                del self.space_players[player_id]
+            self.space_players.discard(player_id)
 
     def OnPlayerRespawnFinish(self, args):
         """
@@ -221,13 +196,13 @@ class RocketServerSystem(object):
 
         if to_dimension in SPACE_DIMENSIONS:
             # 进入太空维度：加入真空伤害列表
-            self.space_players[player_id] = 0
+            self.space_players.add(player_id)
             self._on_enter_space(player_id, to_dimension)
         else:
-            # 离开太空维度：从真空伤害列表移除
+            # 离开太空维度：从真空伤害列表移除（仅在玩家原本在太空时触发离开回调）
             if player_id in self.space_players:
-                del self.space_players[player_id]
-            self._on_leave_space(player_id, from_dimension)
+                self.space_players.discard(player_id)
+                self._on_leave_space(player_id, from_dimension)
 
     def OnAddServerPlayer(self, args):
         """
@@ -242,7 +217,7 @@ class RocketServerSystem(object):
         # 检查玩家当前维度，如果在太空维度则加入列表
         dimension_id = self._get_player_dimension(player_id)
         if dimension_id in SPACE_DIMENSIONS:
-            self.space_players[player_id] = 0
+            self.space_players.add(player_id)
             logger.info("[MCHuojian] 玩家 %s 当前在太空维度 %d", player_id, dimension_id)
 
     def OnDelServerPlayer(self, args):
@@ -255,8 +230,7 @@ class RocketServerSystem(object):
             return
         logger.info("[MCHuojian] 玩家离开: %s", player_id)
 
-        if player_id in self.space_players:
-            del self.space_players[player_id]
+        self.space_players.discard(player_id)
 
     # ============================================================
     # 核心逻辑
@@ -302,18 +276,19 @@ class RocketServerSystem(object):
         文档依据：
           - 背包.md L302-L335 GetPlayerItem
           - 枚举值/ItemPosType.md ARMOR=3
-          - 枚举值/ArmorSlotType.md HEAD=0/BODY=1/LEG=2/FOOT=3
+          - 枚举值/ArmorSlotType.md HEAD/BODY/LEG/FOOT
         """
         try:
             item_comp = serverApi.GetEngineCompFactory().CreateItem(player_id)
             armor_pos_type = serverApi.GetMinecraftEnum().ItemPosType.ARMOR
+            armor_enum = serverApi.GetMinecraftEnum().ArmorSlotType
 
-            # 检查四个盔甲槽位
+            # 检查四个盔甲槽位（使用枚举值，避免魔法数字）
             required_slots = {
-                0: SPACESUIT_HELMET,      # HEAD
-                1: SPACESUIT_CHESTPLATE,  # BODY
-                2: SPACESUIT_LEGGINGS,     # LEG
-                3: SPACESUIT_BOOTS,        # FOOT
+                armor_enum.HEAD: SPACESUIT_HELMET,
+                armor_enum.BODY: SPACESUIT_CHESTPLATE,
+                armor_enum.LEG: SPACESUIT_LEGGINGS,
+                armor_enum.FOOT: SPACESUIT_BOOTS,
             }
 
             for slot, expected_item in required_slots.items():
@@ -350,14 +325,12 @@ class RocketServerSystem(object):
     def _get_player_dimension(self, player_id):
         """
         获取玩家当前所在维度ID。
-        文档依据：实体/属性.md L109-L140 GetAttrValue
-        TODO: 确认获取维度ID的正确API（可能需用GetPlayerDimensionId或其他接口）
+        文档依据：实体/属性.md L238-L263 GetEntityDimensionId
+        （玩家是实体，维度查询走 Entity 组件而非 Player 组件）
         """
         try:
-            # 通过实体组件获取维度ID
-            # TODO: 使用正确的API获取维度，当前使用entity组件
-            comp = serverApi.GetEngineCompFactory().CreatePlayer(player_id)
-            dimension_id = comp.GetPlayerDimensionId()
+            comp = serverApi.GetEngineCompFactory().CreateEntity(player_id)
+            dimension_id = comp.GetEntityDimensionId()
             return dimension_id
         except Exception as e:
             logger.error("[MCHuojian] 获取玩家 %s 维度失败: %s", player_id, str(e))
@@ -366,13 +339,12 @@ class RocketServerSystem(object):
     def _teleport_player(self, player_id, target_dimension, target_pos):
         """
         传送玩家到指定维度和坐标。
-        文档依据：TODO - 查找传送API
+        文档依据：玩家/行为.md L201-L232 ChangePlayerDimension
         """
         try:
             x, y, z = target_pos
             comp = serverApi.GetEngineCompFactory().CreatePlayer(player_id)
-            # TODO: 使用正确的传送API
-            # comp.ChangePlayerDimension(target_dimension, (x, y, z))
+            comp.ChangePlayerDimension(target_dimension, (x, y, z))
             logger.info("[MCHuojian] 传送玩家 %s 到维度 %d 坐标 (%d, %d, %d)",
                         player_id, target_dimension, x, y, z)
         except Exception as e:

@@ -12,7 +12,7 @@ MCHuojian 火箭模组 - modMain 入口
 
 from mod.common.mod import Mod
 from mod.common.system import System
-from mod_log import logger as logger
+from mod_log import logger
 
 # 注册服务端系统
 from server_system import RocketServerSystem
